@@ -1,43 +1,76 @@
-# Estação Meteorológica com ESP32   ☁️🌧☀️
+# Weather Station — ESP32
 
-## Equipe 🤖
+Autonomous weather station built with ESP32 that collects environmental data from multiple sensors and publishes it over Wi-Fi via MQTT.
 
-<ul>
-<li>Andrew de Carvalho Dellamea</li>
-<li>Brendha Iara Gruber de Lima</li>
-<li>Felipe Alves Santana</li>
-<li>Matheus Ernan Reichert</li>
-</ul>
+Developed for the **Embedded Systems** course at Instituto Federal Catarinense.
 
-## Projeto desenvolvido na disciplina de Sistemas Embarcados **📊**
+---
 
-<strong>Objetivo do projeto</strong>: Construção de uma estação meteorológica autônoma que manda seus dados para um servidor MQTT por meio de comunicação sem fio.
+## Sensors
 
-<strong>Nosso projeto conta com sensores de:</strong>
+| Sensor | Measurement |
+|--------|------------|
+| DHT22 | Temperature & Humidity |
+| BMP085 | Atmospheric Pressure & Altitude |
+| ML8511 | UV Radiation |
+| Rain Sensor | Rain detection (analog) |
+| Rain Gauge | Rainfall accumulation (digital pulse) |
+| Anemometer | Wind speed (digital pulse) |
+| Wind Vane | Wind direction (N / S / E / W) |
 
-<ul>
-<li>🚰 Pluviosidade</li>
-<li>🌬️ Direção dos ventos</li>
-<li>🌬️ Velocidade dos ventos</li>
-<li>☢️ Radiação Ultra violeta</li>
-<li>💨 Pressão</li>
-<li>🌡️ Temperatura</li>
-<li>💧 Umidade</li>
-<li>☔ Chuva</li>
-</ul>
+---
 
-### Bibliotecas utilizadas no projeto 💻
+## How it works
 
-<ul>
-<li><a href="https://github.com/bertmelis/esp32DHT">esp32DHT</a></li>
-<li><a href="https://github.com/plapointe6/EspMQTTClient">EspMQTTClient</a></li>
-<li><a href="https://github.com/adafruit/Adafruit-BMP085-Library">AdafruitBMP085</a></li>
-<li><a href="https://github.com/RobTillaart/ML8511">ML8511 - UV sensor</a></li>
-<li><a href="https://github.com/HelTecAutomation/Heltec_ESP32">Heltec ESP32</a></li>
-</ul>
+Every second, the ESP32 reads all sensors and publishes a JSON payload to an MQTT broker over Wi-Fi:
 
+```json
+{
+  "temperature": "23.5",
+  "humidity": "68.0",
+  "pressure": "850.0",
+  "uv": "0.012",
+  "rain": "dry",
+  "anemometer_state": "1",
+  "rain_gauge_state": "0",
+  "wind_vane_north_state": "1",
+  "wind_vane_south": "0",
+  "wind_vane_west": "0",
+  "wind_vane_east": "0"
+}
+```
 
+---
 
+## Stack
 
+- **Hardware**: Heltec ESP32
+- **Framework**: Arduino (via PlatformIO)
+- **Language**: C++
+- **Protocol**: MQTT (EspMQTTClient)
 
+## Libraries
 
+- [esp32DHT](https://github.com/bertmelis/esp32DHT) — async DHT22 driver
+- [EspMQTTClient](https://github.com/plapointe6/EspMQTTClient) — MQTT over Wi-Fi
+- [Adafruit BMP085](https://github.com/adafruit/Adafruit-BMP085-Library) — pressure sensor
+- [ML8511](https://github.com/RobTillaart/ML8511) — UV sensor
+- [Heltec ESP32](https://github.com/HelTecAutomation/Heltec_ESP32) — board support
+
+---
+
+## Getting started
+
+1. Install [PlatformIO](https://platformio.org/)
+2. Clone the repo
+3. Set your Wi-Fi credentials and MQTT broker address in `src/main.cpp`
+4. Flash: `pio run --target upload`
+
+---
+
+## Team
+
+- Andrew de Carvalho Dellamea
+- Brendha Iara Gruber de Lima
+- Felipe Alves Santana
+- Matheus Ernan Reichert
